@@ -1,0 +1,49 @@
+import tkinter as tk
+from gpiozero import Servo, DistanceSensor
+import RPi.GPIO as GPIO
+
+# Initialize GPIO pins
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)  # GPIO pin for stepper motor
+GPIO.setup(19, GPIO.OUT)  # GPIO pin for servo motor (pan)
+GPIO.setup(20, GPIO.OUT)  # GPIO pin for servo motor (tilt)
+
+# Initialize servo motors
+pan_servo = Servo(19)
+tilt_servo = Servo(20)
+
+def move_height(direction):
+    # Code to control stepper motor for height adjustment
+    pass
+
+def move_pan(direction):
+    # Code to control pan servo motor
+    pass
+
+def move_tilt(direction):
+    # Code to control tilt servo motor
+    pass
+
+# Create Tkinter GUI
+root = tk.Tk()
+root.title("IoT Device Control")
+
+# Create buttons for height adjustment
+height_up_btn = tk.Button(root, text="Up", command=lambda: move_height("up"))
+height_up_btn.grid(row=0, column=0)
+height_down_btn = tk.Button(root, text="Down", command=lambda: move_height("down"))
+height_down_btn.grid(row=1, column=0)
+
+# Create buttons for pan adjustment
+pan_left_btn = tk.Button(root, text="Left", command=lambda: move_pan("left"))
+pan_left_btn.grid(row=0, column=1)
+pan_right_btn = tk.Button(root, text="Right", command=lambda: move_pan("right"))
+pan_right_btn.grid(row=1, column=1)
+
+# Create buttons for tilt adjustment
+tilt_up_btn = tk.Button(root, text="Up", command=lambda: move_tilt("up"))
+tilt_up_btn.grid(row=0, column=2)
+tilt_down_btn = tk.Button(root, text="Down", command=lambda: move_tilt("down"))
+tilt_down_btn.grid(row=1, column=2)
+
+root.mainloop()
