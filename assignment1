@@ -1,0 +1,53 @@
+import cv2
+
+def preprocess_frame(frame):
+    
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    
+    _, thresholded = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    return thresholded
+
+def detect_data_areas(frame):
+    
+    contours, _ = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    data_areas = []
+    
+    for contour in contours:
+        area = cv2.contourArea(contour)
+        if area > 1000:  # Arbitrary threshold for area size
+            x, y, w, h = cv2.boundingRect(contour)
+            data_areas.append((x, y, w, h))
+    return data_areas
+
+def main():
+   
+    cap = cv2.VideoCapture('video_feed.mp4')  # Replace 'video_feed.mp4' with actual video source
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        
+        processed_frame = preprocess_frame(frame)
+
+        
+        data_areas = detect_data_areas(processed_frame)
+
+        
+        for (x, y, w, h) in data_areas:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+        
+        cv2.imshow('Data Areas Detection', frame)
+
+        
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+if _name_ == "_main_":
+    main()
